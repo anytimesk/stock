@@ -2,7 +2,7 @@
 
 ## 1. PostgreSQL  구성
 
--   env 파일을 개인 설정에 맞게 재설정함
+-   bashrc 또는 zshrc 파일을 개인 설정에 맞게 재설정함
     ```sh
     export POSTGRESQL_USER=sky              # Postgres SQL 접속 ID
     export POSTGRESQL_PASSWORD=123456       # Postgres SQL 접속 Password
