@@ -23,3 +23,10 @@ spring:
         username: ${POSTGRESQL_USER}
         password: ${POSTGRESQL_PASSWORD}
         driver-class-name: org.postgresql.Driver
+
+logging:
+    config: classpath:/log4j2/log4j2.xml
+    level:
+        org:
+            hibernate:
+                sql: error

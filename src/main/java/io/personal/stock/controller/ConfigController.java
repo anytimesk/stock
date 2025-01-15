@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.personal.stock.entity.Config;
 import io.personal.stock.service.ConfigService;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Controller
 public class ConfigController {
 
@@ -26,6 +28,12 @@ public class ConfigController {
     public String conf(Model model) {
 
         List<Config> configInfos = configService.getAllConfig();
+        configInfos.forEach(config -> {
+            log.info("id : {}, key : {}, value : {}, category : {}, comment : {}",
+                    config.getId(), config.getConfName(), config.getConfValue(), config.getCategory(),
+                    config.getComment());
+        });
+
         model.addAttribute("confs", configInfos);
 
         return "conf";
