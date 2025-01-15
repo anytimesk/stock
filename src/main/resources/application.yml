@@ -8,3 +8,18 @@ spring:
         check-template-location: true
         suffix: .html
         mode: HTML
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        open-in-view: false
+        generate-ddl: false
+
+    datasource:
+        url: jdbc:postgresql://${POSTGRESQL_HOST}:5432/stock
+        username: ${POSTGRESQL_USER}
+        password: ${POSTGRESQL_PASSWORD}
+        driver-class-name: org.postgresql.Driver
