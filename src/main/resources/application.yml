@@ -24,6 +24,9 @@ spring:
         password: ${POSTGRESQL_PASSWORD}
         driver-class-name: org.postgresql.Driver
 
+    elasticsearch:
+        uris: http://localhost:9200
+
 logging:
     config: classpath:/log4j2/log4j2.xml
     level:
