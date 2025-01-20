@@ -82,6 +82,8 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                getCompanyList();
+
                 var table = $("#itemTable").DataTable({
                     destroy: true, // 테이블을 재초기화할 수 있도록 설정
                     searching: false, // 검색 기능 비활성화
@@ -97,6 +99,21 @@
                 const $itmsNm = $("#itmsNm");
                 initializeInputEvents($itmsNm);
             });
+
+            function getCompanyList() {
+                $.ajax({
+                    url: "/stock/getCompanyList",
+                    type: "GET",
+                    success: function (companies) {
+                        companies.forEach(function (company) {
+                            $("#companiesList").append("<option value=" + company.itmsNm + "></option>");
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        alert("회사 목록을 가져오는 데 실패했습니다.");
+                    },
+                });
+            }
 
             function getStockPriceInfo(table) {
                 if ($("#itmsNm").val() === "") {
