@@ -102,6 +102,9 @@
                                             <label for="comment" class="form-label">Comment</label>
                                             <input type="text" class="form-control" id="comment" required />
                                         </div>
+
+                                        <!-- CSRF 토큰을 HTML에 삽입 -->
+                                        <s:csrfInput />
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -147,12 +150,17 @@
                     category: $("#category").val(),
                     comment: $("#comment").val(),
                 };
+                const csrfToken = $('input[name="_csrf"]').val();
+                const csrfHeader = $('meta[name="_csrf_header"]').attr("content");
 
                 $.ajax({
                     type: "POST",
                     url: "/conf/add",
                     contentType: "application/json",
                     data: JSON.stringify(configData),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken); // CSRF 토큰을 요청 헤더에 추가
+                    },
                     success: function (response) {
                         alert(response); // Display success message
                         $("#configModal").modal("hide"); // Close modal
@@ -165,9 +173,15 @@
             }
 
             function deleteConfig(id, row) {
+                const csrfToken = $('input[name="_csrf"]').val();
+                const csrfHeader = $('meta[name="_csrf_header"]').attr("content");
+
                 $.ajax({
                     url: "/conf/delete/" + id,
                     type: "DELETE",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
                     success: function (response) {
                         alert(response);
                         row.remove(); // Remove row from DataTable

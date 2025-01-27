@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.personal.stock.entity.Config;
 import io.personal.stock.service.ConfigService;
+import io.personal.stock.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -22,10 +26,15 @@ import lombok.extern.log4j.Log4j2;
 public class ConfigController {
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     ConfigService configService;
 
     @GetMapping(value = "/conf")
-    public String conf(Model model) {
+    public String conf(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) {
+
+        memberService.loginCheckAndInsertModel(principal, request, model);
 
         List<Config> configInfos = configService.getAllConfig();
         configInfos.forEach(config -> {

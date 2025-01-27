@@ -1,10 +1,14 @@
 package io.personal.stock.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,14 +19,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.personal.stock.dto.OpenApiReqParam;
+import io.personal.stock.entity.Member;
 import io.personal.stock.service.ConfigService;
 import io.personal.stock.service.KRXListedDataService;
+import io.personal.stock.service.MemberService;
 import io.personal.stock.service.OpenApiService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Controller
 public class InfoController {
+
+    @Autowired
+    MemberService memberService;
 
     @Autowired
     ConfigService configService;
@@ -34,9 +44,23 @@ public class InfoController {
     KRXListedDataService krxListedDataService;
 
     @GetMapping(value = "/info")
-    public String info() {
+    public String info(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) {
+
+        memberService.loginCheckAndInsertModel(principal, request, model);
 
         return "info";
+    }
+
+    @GetMapping(value = "/users")
+    public String user(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) {
+
+        List<Member> members = memberService.getAllUsers();
+
+        model.addAttribute("members", members);
+
+        memberService.loginCheckAndInsertModel(principal, request, model);
+
+        return "users";
     }
 
     @GetMapping(value = "/info/saveCompanyList")
