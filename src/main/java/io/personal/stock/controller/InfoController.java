@@ -1,6 +1,7 @@
 package io.personal.stock.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.personal.stock.dto.OpenApiReqParam;
+import io.personal.stock.entity.Member;
 import io.personal.stock.service.ConfigService;
 import io.personal.stock.service.KRXListedDataService;
 import io.personal.stock.service.MemberService;
@@ -47,6 +49,18 @@ public class InfoController {
         memberService.loginCheckAndInsertModel(principal, request, model);
 
         return "info";
+    }
+
+    @GetMapping(value = "/users")
+    public String user(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request, Model model) {
+
+        List<Member> members = memberService.getAllUsers();
+
+        model.addAttribute("members", members);
+
+        memberService.loginCheckAndInsertModel(principal, request, model);
+
+        return "users";
     }
 
     @GetMapping(value = "/info/saveCompanyList")
