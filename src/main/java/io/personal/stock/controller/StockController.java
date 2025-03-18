@@ -61,8 +61,9 @@ public class StockController {
 
     @GetMapping(value = "/stock/getStockPriceInfo")
     @ResponseBody
-    public ResponseEntity<JsonNode> getStockPriceInfo(@RequestParam String itmsNm, @RequestParam int pageNo,
-            @RequestParam int numOfRows) {
+    public ResponseEntity<JsonNode> getStockPriceInfo(@RequestParam("itmsNm") String itmsNm,
+            @RequestParam("pageNo") int pageNo,
+            @RequestParam("numOfRows") int numOfRows) {
 
         // DB로부터 data.go.kr 접속을 위한 인증키, URL 정보를 가져온다.
         HashMap<String, String> data = configService.getConfigData("STOCK_INFO");

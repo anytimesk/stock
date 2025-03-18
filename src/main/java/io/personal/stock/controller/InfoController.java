@@ -65,7 +65,8 @@ public class InfoController {
 
     @GetMapping(value = "/info/saveCompanyList")
     @ResponseBody
-    public ResponseEntity<JsonNode> saveCompanyList(@RequestParam int numOfRows, @RequestParam int pageNo) {
+    public ResponseEntity<JsonNode> saveCompanyList(@RequestParam("numOfRows") int numOfRows,
+            @RequestParam("pageNo") int pageNo) {
         HashMap<String, String> data = configService.getConfigData("ISIN_CODE");
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("serviceKey", data.get("AUTH_KEY"));
